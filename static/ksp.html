@@ -164,7 +164,7 @@
         app.add_joystick(new JoyStick('joystick_primary'), Axis.X, Axis.Y);
         app.add_joystick(new JoyStick('joystick_secondary'), Axis.RX, Axis.RY);
         app.add_slider(create_toggle_slider("slider_rudder", "slider_rudder_spring"), Axis.Z);
-        app.add_slider(new Slider(document.getElementById('slider_throttle')), Axis.THROTTLE);
+        app.add_slider(new Slider(document.getElementById('slider_throttle')), Axis.SLIDER);
 
         // Automatically add buttons
         let app_buttons = document.getElementsByClassName("app_btn");
