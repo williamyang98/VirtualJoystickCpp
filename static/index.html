@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>vJoy Configurations</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+  </head>
+  <body>
+    <h1>vJoy Configurations</h1>
+    <ul>
+      <li><a href="./msfs.html">Microsoft Flight Simulator 2020</a></li>
+      <li><a href="./ksp.html">Kerbal Space Program</a></li>
+    </ul>
+    <!-- Debug the screen size of your device -->
+    <button id="btn_get_screen_size">Get screen size</button>
+    <script type="text/javascript">
+      document.getElementById("btn_get_screen_size").onclick = ev => {
+        ev.preventDefault();
+        let body = document.getElementsByTagName('body')[0];
+        let x = window.innerWidth || document.documentElement.clientWidth || body.clientWidth;
+        let y = window.innerHeight|| document.documentElement.clientHeight|| body.clientHeight;
+        alert(`Screen size: (${x},${y})`);
+      };
+    </script>
+  </body>
+</html>

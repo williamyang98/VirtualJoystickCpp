@@ -1,0 +1,81 @@
+/* Prevent scrolling by removing margins */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 0;
+  font-size: 100%;
+}
+
+/* Highlight gui region */
+.gui-region {
+  /* Apply border to inside of region to avoid overflowing */
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,1);
+  /* Disable text selection */
+  -webkit-user-select: none;  /* Safari */
+  -ms-user-select: none;      /* IE 10 and IE 11 */
+  user-select: none;          /* Standard syntax */
+  padding: 20px 20px;         /* Avoid trigger mobile edge swipes */
+  position: relative;
+}
+
+/* Button press */
+.btn-momentary[attr-state="true"] {
+  background-color: #5097ff;
+}
+
+/* Toggle button */
+.btn-toggle[attr-state="false"] {
+  background-color: #e49090;
+}
+
+.btn-toggle[attr-state="true"] {
+  background-color: #8fec92;
+}
+
+/* Status bar */
+.status-bar {
+  position: absolute;
+  margin: 0px 0px;
+  bottom: 5px;
+  right: 5px;
+  z-index: 1; 
+}
+
+.status-led {
+  width: 15px;
+  height: 15px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+/* Other styles */
+.round-border {
+  /* Apply border to inside of region to avoid overflowing */
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.control-surface {
+  cursor: pointer;
+}
+
+.rotate-90 {
+  position: relative;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+}

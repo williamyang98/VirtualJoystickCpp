@@ -1,0 +1,25 @@
+// Packet structure for client and server
+
+CLIENT -> SERVER
+COMMAND DATA                            DESCRIPTION
+0x00    u8=vjoy_id                      Acquire the vJoy device with this id
+0x01    u8=button_id u8=state           Set button state    (0 or 1)
+0x02    u8=axis_id   s8=state           Set axis state      (-100 to +100)
+0x03                                    Reset everything
+0x04                                    Get device info
+
+
+SERVER -> CLIENT
+COMMAND DATA                            DESCRIPTION
+0x00    u8=status u8=vjoy_id            Was device acquired?
+0x01    u8=status u8=button_id          Was button update success?
+0x02    u8=status u8=axis_id            Was axis update success?
+0x03    u8=status                       Was reset success?
+0x04    REFER_TO_DEVINFO                Device information
+0xFF    u8=status                       Invalid request
+
+DEVINFO
+u8=list_length, [u8...]=valid axes,
+u8=total_buttons, 
+u8=total_discrete_POVs,
+u8=total_continuous_POVs

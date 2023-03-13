@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>MSFS 2020</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/led.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+  </head>
+  <body>
+    <!--Controller GUI area (fixed size for Honor Play)-->
+    <div class="gui-region" style="width:750px;height:360px">
+      <!-- Top control row -->
+      <div class="d-flex flex-row" style="height:200px;margin-bottom:5px">
+        <!-- Primary control stick -->
+        <div class="control-surface round-border" id="joystick_primary" style="width:200px;height:200px"></div>
+        <!-- Quick access buttons -->
+        <div class="mx-auto">
+          <div class="grid-container" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+            <!-- Row -->
+            <button class="btn btn-toggle app_toggle_btn" attr-state="false" value="0">BRAKE</button>
+            <button class="btn btn-toggle app_toggle_btn" attr-state="false" value="1">PBRAKE</button>
+            <!-- Row -->
+            <button class="btn btn-momentary app_btn" value="2">GEAR</button>
+            <button class="btn btn-momentary app_btn" value="3">LIGHTS</button>
+            <!-- Row -->
+            <label class="text-center" style="grid-column: span 2">⇙ INSTRUMENTS ⇘</label>
+            <button class="btn btn-momentary app_btn" value="4">PREV</button>
+            <button class="btn btn-momentary app_btn" value="5">NEXT</button>
+            <!-- Row -->
+            <label class="text-center" style="grid-column: span 2">⇙ PITCH TRIM ⇘</label>
+            <button class="btn btn-momentary app_btn" value="6">DOWN</button>
+            <button class="btn btn-momentary app_btn" value="7">UP</button>
+          </div>
+        </div>
+        <!-- Common slider controls -->
+        <div class="d-flex flex-row mr-auto">
+          <div class="flex-grow-1">
+            <div class="d-flex flex-col h-100">
+              <div class="control-surface round-border mx-auto" id="slider_engines"  attr-value="-100" attr-orient="vertical" style="height:180px;width:45px"></div>
+              <label class="text-center">ENGINE</label>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex flex-col h-100">
+              <div class="control-surface round-border mx-auto" id="slider_spoilers" attr-value="-100" attr-orient="vertical" style="height:180px;width:45px"></div>
+              <label class="text-center">SPOIL</label>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex flex-col h-100">
+              <div class="control-surface round-border mx-auto" id="slider_flaps"    attr-value="-100" attr-orient="vertical" style="height:180px;width:45px"></div>
+              <label class="text-center">FLAP</label>
+            </div>
+          </div>
+        </div>
+        <!-- Rudder + Secondary control stick -->
+        <div class="d-flex flex-col">
+          <!-- Secondary joystick -->
+          <div class="control-surface round-border" id="joystick_secondary" style="width:200px;height:150px"></div>
+          <!-- Rudder -->
+          <div class="d-flex flex-row mt-auto" style="height:45px">
+            <button class="btn btn-toggle" id="slider_rudder_spring" style="padding-left:4px;padding-right:4px;margin-right:4px" attr-state="true">R</button>
+            <div class="control-surface round-border flex-grow-1" id="slider_rudder" attr-value="0" attr-spring="0" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom control row -->
+      <div class="d-flex flex-row">
+        <div class="grid-container" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+          <!-- Row -->
+          <button class="btn btn-momentary app_btn" value="8">MENU</button>
+          <button class="btn btn-momentary app_btn" value="9">MAP</button>
+          <button class="btn btn-momentary app_btn" value="10">START</button>
+          <button class="btn btn-momentary app_btn" value="11">AI PILOT</button>
+          <!-- Row -->
+          <label class="text-center" style="grid-column: span 4">⇙ CAMERAS ⇘</label>
+          <button class="btn btn-momentary app_btn" value="12">RESET</button>
+          <button class="btn btn-momentary app_btn" value="13">EXTERNAL</button>
+          <button class="btn btn-momentary app_btn" value="14">COCKPIT</button>
+          <button class="btn btn-momentary app_btn" value="15">DRONE</button>
+        </div>
+      </div>
+      <!-- Floating status bar on bottom right -->
+      <div class="status-bar">
+        <div class="d-flex flex-row">
+          <div class="btn-group">
+            <button class="btn" onClick="window.location.href='/index.html'">⌂</button>
+            <button class="btn" id="btn_get_screen_size">?</button>
+            <button class="btn" id="btn_reset_device">↻</button>
+            <button class="btn" id="btn_fullscreen">⛶</button>
+          </div>
+          <div class="status-led" id="status-led"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Glue code -->
+    <script type="module">
+      import { App, Axis } from "/js/app.js";
+      import { toggle_fullscreen } from "/js/fullscreen.js";
+      import { JoyStick } from "/js/joystick.js";
+      import { Slider } from "/js/slider.js";
+      import { Button } from "/js/button.js";
+      import { ToggleButton } from "/js/toggle_button.js";
+
+      // App slider with toggle control for spring
+      let create_toggle_slider = (slider_id, button_id) => {
+        let slider = new Slider(document.getElementById(slider_id));
+        let button = new ToggleButton(document.getElementById(button_id));
+        button.on_change.add(state => {
+          slider.set_spring_mode(state);
+        });
+        button.force_update();
+        return slider;
+      };
+
+      let attach_controls = app => {
+        // Manually add joysticks
+        app.add_joystick(new JoyStick('joystick_primary'), Axis.X, Axis.Y);
+        app.add_joystick(new JoyStick('joystick_secondary'), Axis.RX, Axis.RY);
+        app.add_slider(create_toggle_slider("slider_rudder", "slider_rudder_spring"), Axis.Z);
+        app.add_slider(new Slider(document.getElementById('slider_engines')), Axis.THROTTLE);
+        app.add_slider(new Slider(document.getElementById('slider_flaps')), Axis.SLIDER);
+        app.add_slider(new Slider(document.getElementById('slider_spoilers')), Axis.DIAL);
+
+        // Automatically add buttons
+        let app_buttons = document.getElementsByClassName("app_btn");
+        for (let elem of app_buttons) {
+          let button_id = Number(elem.getAttribute("value"));
+          let button = new Button(elem);
+          app.add_button(button, button_id);
+        }
+
+        let app_toggle_buttons = document.getElementsByClassName("app_toggle_btn");
+        for (let elem of app_toggle_buttons) {
+          let button_id = Number(elem.getAttribute("value"));
+          let button = new ToggleButton(elem);
+          app.add_button(button, button_id);
+        }
+      };
+
+      // Create app
+      let device_id = 1;
+      let app = new App(device_id);
+      attach_controls(app);
+
+      // Extra controls
+      document.getElementById("btn_get_screen_size").onclick = ev => {
+        ev.preventDefault();
+        let body = document.getElementsByTagName('body')[0];
+        let x = window.innerWidth || document.documentElement.clientWidth || body.clientWidth;
+        let y = window.innerHeight|| document.documentElement.clientHeight|| body.clientHeight;
+        alert(`Screen size: (${x},${y})`);
+      };
+
+      document.getElementById("btn_reset_device").onclick = ev => {
+        ev.preventDefault();
+        app.reset_device();
+      };
+
+      document.getElementById("btn_fullscreen").onclick = ev => {
+        ev.preventDefault();
+        toggle_fullscreen();
+      };
+
+      // Status led
+      let status_led = document.getElementById("status-led");
+      status_led.className = "status-led led-yellow";
+      app.on_connection_change = is_open => {
+        if (is_open) {
+          status_led.className = "status-led led-green";
+        } else {
+          status_led.className = "status-led led-red";
+          // alert("Websocket has closed");
+        }
+      };
+
+      // Start app after setup
+      app.start();
+      window.app = app;
+    </script>
+  </body>
+</html>
