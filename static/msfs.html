@@ -124,9 +124,9 @@
         app.add_joystick(new JoyStick('joystick_primary'), Axis.X, Axis.Y);
         app.add_joystick(new JoyStick('joystick_secondary'), Axis.RX, Axis.RY);
         app.add_slider(create_toggle_slider("slider_rudder", "slider_rudder_spring"), Axis.Z);
-        app.add_slider(new Slider(document.getElementById('slider_engines')), Axis.THROTTLE);
-        app.add_slider(new Slider(document.getElementById('slider_flaps')), Axis.SLIDER);
-        app.add_slider(new Slider(document.getElementById('slider_spoilers')), Axis.DIAL);
+        app.add_slider(new Slider(document.getElementById('slider_engines')), Axis.SLIDER);
+        app.add_slider(new Slider(document.getElementById('slider_flaps')), Axis.DIAL);
+        app.add_slider(new Slider(document.getElementById('slider_spoilers')), Axis.RZ);
 
         // Automatically add buttons
         let app_buttons = document.getElementsByClassName("app_btn");
