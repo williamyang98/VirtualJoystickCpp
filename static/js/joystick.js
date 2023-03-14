@@ -58,12 +58,8 @@ class Vector2D {
 // Instantiates a joystick
 // on_change is a callback that takes in a Vector2D which is between -100 and +100
 class JoyStick {
-    constructor(container_id) {
-        // Create Canvas element and add it in the Container object
-        this.elem = document.getElementById(container_id);
-        // NOTE: Fixing Unable to preventDefault inside passive event listener due to target being treated as passive in Chrome 
-        //       [Thanks to https://github.com/artisticfox8 for this suggestion]
-        this.elem.style.touchAction = "none";
+    constructor(elem) {
+        this.elem = elem;
         this.on_change = new Set(); // list of pos => {} handlers where pos.x is between -100 to +100
 
         this.width  = this.elem.clientWidth;

@@ -14,35 +14,68 @@ class App {
         this.joysticks = [];
         this.sliders = [];
 
-        this.on_connection_change = is_open => {};
-    }
+        this.ws_url = (`ws://${document.location.host}/websocket`);
+        this.ws = null;
+        // Send a heartbeat to keep the connection alive
+        this.ws_heartbeat_id = null;
+        // Only let one websocket start
+        this.ws_is_updating = false;
 
-    // listeners
-    on_connection = () => {
-        this.send_data(this.packet_encoder.acquire_device(this.device_id));
-        this.send_data(this.packet_encoder.reset_device());
-        this.force_update();
-        this.on_connection_change(true);
-    };
+        // Wakelock to keep screen active
+        this.wakelock = null;
+        // Only let one wakelock toggle occur
+        this.wakelock_is_updating = false;
+
+        this.on_connection_change = new Set();  // list of ws_state => {} handlers
+        this.on_wakelock_change = new Set();    // list of is_wakelock => {} handlers
+    }
 
     // utility methods
     send_data = (data) => {
-        if (this.ws.readyState == this.ws.OPEN) {
-            this.ws.send(data);
+        if (this.ws === null) return;
+        if (this.ws.readyState !== WebSocket.OPEN) return;
+        this.ws.send(data);
+    }
+
+    convert_axis_value = val => {
+        return val+100;
+    }
+
+    notify_ws_state = state => {
+        for (let callback of this.on_connection_change) {
+            callback(state);
         }
     }
 
-    convert_axis_value = (val) => {
-        return val+100;
-    };
+    notify_wakelock = state => {
+        for (let callback of this.on_wakelock_change) {
+            callback(state);
+        }
+    }
 
-    // public methods
-    start = () => {
-        this.ws_url = (`ws://${document.location.host}/websocket`);
+    // websocket methods
+    close_ws_heartbeat = () => {
+        if (this.ws_heartbeat_id === null) return;
+        clearInterval(this.ws_heartbeat_id);
+        this.ws_heartbeat_id = null;
+    }
+
+    open_ws_heartbeat = () => {
+        this.close_ws_heartbeat();
+        this.ws_heartbeat_id = setInterval(() => {
+            this.send_data(this.packet_encoder.acquire_device(this.device_id));
+        }, 1000);
+    }
+
+    open_websocket = () => {
         this.ws = new WebSocket(this.ws_url);
         this.ws.onopen = () => {
-            let message = "ws_open";
-            this.on_connection();
+            this.send_data(this.packet_encoder.acquire_device(this.device_id));
+            this.send_data(this.packet_encoder.reset_device());
+            this.force_update();
+            this.open_ws_heartbeat();
+            this.notify_ws_state(WebSocket.OPEN);
+            this.ws_is_updating = false;
         };
 
         this.ws.onmessage = (ev) => { 
@@ -51,8 +84,20 @@ class App {
         };
 
         this.ws.onclose = () => { 
-            this.on_connection_change(false);
+            this.ws = null;
+            this.close_ws_heartbeat();
+            this.notify_ws_state(WebSocket.CLOSED);
+            this.ws_is_updating = false;
         };
+    }
+
+    // public methods
+    start = () => {
+        if (this.ws !== null) return;
+        if (this.ws_is_updating) return;
+        this.ws_is_updating = true;
+        this.notify_ws_state(WebSocket.CONNECTING);
+        this.open_websocket();
     }
 
     add_joystick = (joystick, axis_x, axis_y) => {
@@ -90,6 +135,10 @@ class App {
     }
 
     reset_device = () => {
+        if (this.ws === null) {
+            this.start();
+            return;
+        }
         this.send_data(this.packet_encoder.reset_device());
         this.force_update();
     }
@@ -105,6 +154,52 @@ class App {
             e.force_update();
         }
     }
+
+    check_has_wakelock = () => {
+        return "wakeLock" in navigator;
+    }
+
+    toggle_wakelock = () => {
+        if (this.wakelock_is_updating) return;
+
+        if (!this.check_has_wakelock()) {
+            this.notify_wakelock(false);
+            return;
+        }
+
+        this.wakelock_is_updating = true;
+
+        if (this.wakelock === null) {
+            navigator.wakeLock
+                .request("screen")
+                .then(wakelock => {
+                    this.wakelock = wakelock;
+                    this.wakelock_is_updating = false;
+                    this.notify_wakelock(true);
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert(`Failed to acquire wakelock: ${err}`);
+                    this.wakelock_is_updating = false;
+                    this.notify_wakelock(false);
+                });
+        } else {
+            this.wakelock
+                .release()
+                .then(() => {
+                    this.wakelock = null;
+                    this.wakelock_is_updating = false;
+                    this.notify_wakelock(false);
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert(`Failed to release wakelock: ${err}`);
+                    this.wakelock_is_updating = false;
+                    this.notify_wakelock(true);
+                });
+        }
+    }
+
 };
 
 export { App, Axis };

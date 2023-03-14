@@ -49,6 +49,9 @@ class GlobalDebounce {
 class Surface {
     constructor(elem, is_track_movement=true) {
         this.elem = elem;
+        // NOTE: Fixing Unable to preventDefault inside passive event listener due to target being treated as passive in Chrome 
+        //       [Thanks to https://github.com/artisticfox8 for this suggestion]
+        this.elem.style.touchAction = "none";
         this.is_track_movement = is_track_movement;
 
         // user overrides these callbacks

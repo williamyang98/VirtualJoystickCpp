@@ -33,6 +33,11 @@ label {
   background-color: buttonface;
 }
 
+button[disabled] {
+  opacity: .45;
+  pointer-events: none;
+}
+
 /* Button sizes are derived from bootstrap 4 */
 .btn.btn-xs {
   padding: 1px 5px;
