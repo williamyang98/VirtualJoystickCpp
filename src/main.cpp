@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <filesystem>
+#include <string_view>
 #include "vjoy.hpp"
 #include "server/run_server.hpp"
 #include "controller/controller_packet_handler.hpp"
-
 #define OPTPARSE_IMPLEMENTATION
 #include "utility/optparse.h"
 
@@ -80,6 +81,31 @@ ArgumentParser parse_arguments(int argc, char** argv) {
             exit(1);
             break;
         }
+    }
+
+    // Validate port
+    constexpr int PORT_MAX = 65535;
+    constexpr int PORT_MIN = 0;
+    if ((parser.port < PORT_MIN) || (parser.port > PORT_MAX)) {
+        fprintf(
+            stderr, "Port must be between %d and %d, got %d\n", 
+            PORT_MIN, PORT_MAX, parser.port
+        );
+        exit(1);
+    }
+
+    // Validate filepath
+    namespace fs = std::filesystem;
+    fs::path static_filepath;
+    try {
+        static_filepath = fs::path(std::string_view(parser.static_filepath));
+    } catch(...) {
+        fprintf(stderr, "Static filepath is invalid: '%s'\n", parser.static_filepath);
+        exit(1);
+    }
+    if (!fs::is_directory(static_filepath)) {
+        fprintf(stderr, "Static filepath is not a directory: '%s'\n", parser.static_filepath);
+        exit(1);
     }
 
     return parser;

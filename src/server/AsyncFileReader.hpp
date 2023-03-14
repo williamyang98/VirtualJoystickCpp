@@ -1,3 +1,4 @@
+// Source: https://github.com/uNetworking/uWebSockets/blob/526a9ad6cdc0299b95ef9c8d337ce99d2cac120a/examples/helpers/AsyncFileReader.h
 #pragma once
 
 #include <map>
