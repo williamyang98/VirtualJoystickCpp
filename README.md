@@ -1,4 +1,6 @@
 # Explanation
+![windows-build](https://github.com/FiendChain/VirtualJoystickCpp/actions/workflows/windows.yml/badge.svg)
+
 [uWebsockets](https://github.com/uNetworking/uWebSockets) C++ server communicates with [vJoy](https://github.com/njz3/vJoy) to emulate a virtual joystick over a websocket.
 
 ## Instructions for use
