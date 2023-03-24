@@ -14,7 +14,7 @@ struct ArgumentParser {
 
 class HandlerFactory: public PacketHandlerFactory {
 public:
-    std::unique_ptr<PacketHandler> create_handler(void) {
+    std::unique_ptr<PacketHandler> create_handler(void) override {
         return std::make_unique<ControllerPacketHandler>();
     }
 };

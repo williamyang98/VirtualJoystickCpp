@@ -14,8 +14,8 @@ private:
     std::unique_ptr<ControllerSession> session;
 public:
     ControllerPacketHandler(); 
-    ~ControllerPacketHandler() = default;
-    tcb::span<const uint8_t> on_packet(tcb::span<const uint8_t> buf);
+    ~ControllerPacketHandler() override = default;
+    tcb::span<const uint8_t> on_packet(tcb::span<const uint8_t> buf) override;
 private:
     tcb::span<const uint8_t> on_acquire(tcb::span<const uint8_t> buf);
     tcb::span<const uint8_t> on_button(tcb::span<const uint8_t> buf);
@@ -23,9 +23,12 @@ private:
     tcb::span<const uint8_t> on_reset(tcb::span<const uint8_t> buf);
     tcb::span<const uint8_t> on_dev_info(tcb::span<const uint8_t> buf);
 
+    // Helper to type cast arguments into packet bytes
     template <typename ... U>
     tcb::span<const uint8_t> create_packet(U&& ... args) {
         const size_t N = sizeof...(args);
+        // NOTE: This is a fold expression
+        //       https://en.cppreference.com/w/cpp/language/fold
         size_t i = 0;
         ([&] {
             encode_buf[i++] = uint8_t(args);
