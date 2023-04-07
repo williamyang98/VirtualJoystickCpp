@@ -164,7 +164,7 @@ let create_app_status_bar = app => {
 
     root_elem.querySelector("#home").addEventListener("click", ev => {
         ev.preventDefault();
-        window.location.href = "/index.html";
+        window.location.href = "/";
     });
 
     root_elem.querySelector("#screen-size").addEventListener("click", ev => {
