@@ -164,7 +164,7 @@ let create_app_status_bar = app => {
 
     root_elem.querySelector("#home").addEventListener("click", ev => {
         ev.preventDefault();
-        window.location.href = "/";
+        window.location.href = "/VirtualJoystickCpp";
     });
 
     root_elem.querySelector("#screen-size").addEventListener("click", ev => {
