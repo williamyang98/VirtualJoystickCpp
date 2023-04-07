@@ -2,14 +2,14 @@
 <html>
   <head>
     <title>KSP</title>
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/app.css">
-    <link rel="stylesheet" href="/css/led.css">
-    <link rel="stylesheet" href="/css/modal.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="./css/led.css">
+    <link rel="stylesheet" href="./css/modal.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
+    <link rel="manifest" href="./manifest.json">
     <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
   </head>
   <body>
@@ -123,8 +123,8 @@
     
     <!-- Glue code -->
     <script type="module">
-      import { App } from "/js/app.js";
-      import { create_modal, create_app_controls, create_app_status_bar } from "/js/common.js";
+      import { App } from "./js/app.js";
+      import { create_modal, create_app_controls, create_app_status_bar } from "./js/common.js";
 
       let modal_open_elems = document.querySelectorAll("[attr-modal-id]");
       for (let elem of modal_open_elems) {
