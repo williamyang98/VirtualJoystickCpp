@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>MSFS 2020</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/led.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
+  </head>
+  <body>
+    <!--Controller GUI area (fixed size for Honor Play)-->
+    <div class="gui-region" style="width:750px;height:360px">
+      <!-- Top control row -->
+      <div class="d-flex flex-row" style="height:200px;margin-bottom:5px">
+        <!-- Primary control stick -->
+        <div attr-app="joystick" attr-app-joystick-axis-x="Axis.X" attr-app-joystick-axis-y="Axis.Y" 
+             class="control-surface round-border" style="width:200px;height:200px"></div>
+        <!-- Quick access buttons -->
+        <div class="mx-auto">
+          <div class="grid-container" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+            <!-- Row -->
+            <button attr-app="toggle" attr-app-toggle-id="0" attr-state="true" class="btn btn-toggle">BRAKE</button>
+            <button attr-app="button" attr-app-button-id="1" class="btn btn-momentary">PBRAKE</button>
+            <!-- Row -->
+            <button attr-app="button" attr-app-button-id="2" class="btn btn-momentary">GEAR</button>
+            <button attr-app="button" attr-app-button-id="3" class="btn btn-momentary">LIGHTS</button>
+            <!-- Row -->
+            <label class="text-center" style="grid-column: span 2">⇙ INSTRUMENTS ⇘</label>
+            <button attr-app="button" attr-app-button-id="4" class="btn btn-momentary">PREV</button>
+            <button attr-app="button" attr-app-button-id="5" class="btn btn-momentary">NEXT</button>
+            <!-- Row -->
+            <label class="text-center" style="grid-column: span 2">⇙ PITCH TRIM ⇘</label>
+            <button attr-app="button" attr-app-button-id="6" class="btn btn-momentary">DOWN</button>
+            <button attr-app="button" attr-app-button-id="7" class="btn btn-momentary">UP</button>
+          </div>
+        </div>
+        <!-- Common slider controls -->
+        <div class="d-flex flex-row mr-auto">
+          <div class="flex-grow-1">
+            <div class="d-flex flex-col h-100">
+              <div attr-app="slider" attr-app-slider-axis="Axis.SLIDER" attr-value="-100" attr-orient="vertical" 
+                   class="control-surface round-border mx-auto" style="height:180px;width:45px"></div>
+              <label class="text-center">ENGINE</label>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex flex-col h-100">
+              <div attr-app="slider" attr-app-slider-axis="Axis.RZ" attr-value="-100" attr-orient="vertical" 
+                   class="control-surface round-border mx-auto" style="height:180px;width:45px"></div>
+              <label class="text-center">SPOIL</label>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex flex-col h-100">
+              <div attr-app="slider" attr-app-slider-axis="Axis.DIAL" attr-value="-100" attr-orient="vertical" 
+                   class="control-surface round-border mx-auto" style="height:180px;width:45px"></div>
+              <label class="text-center">FLAP</label>
+            </div>
+          </div>
+        </div>
+        <!-- Rudder + Secondary control stick -->
+        <div class="d-flex flex-col">
+          <!-- Secondary joystick -->
+          <div attr-app="joystick" attr-app-joystick-axis-x="Axis.RX" attr-app-joystick-axis-y="Axis.RY" 
+               class="control-surface round-border" style="width:200px;height:150px"></div>
+          <!-- Rudder -->
+          <div class="d-flex flex-row mt-auto" style="height:45px">
+            <button id="slider-rudder-spring" attr-state="true" class="btn btn-toggle" style="padding-left:4px;padding-right:4px;margin-right:4px">R</button>
+            <div attr-app="slider" attr-app-slider-axis="Axis.Z" attr-app-slider-spring-button-id="slider-rudder-spring" attr-value="0" attr-spring="0" 
+                 class="control-surface round-border flex-grow-1" style="height:100%"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom control row -->
+      <div class="d-flex flex-row">
+        <div class="grid-container" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+          <!-- Row -->
+          <button attr-app="button" attr-app-button-id="8" class="btn btn-momentary">MENU</button>
+          <button attr-app="button" attr-app-button-id="9" class="btn btn-momentary">MAP</button>
+          <button attr-app="button" attr-app-button-id="10" class="btn btn-momentary">PAUSE</button>
+          <button attr-app="button" attr-app-button-id="11" class="btn btn-momentary">AUTOPILOT</button>
+          <!-- Row -->
+          <label class="text-center" style="grid-column: span 4">⇙ CAMERAS ⇘</label>
+          <button attr-app="button" attr-app-button-id="12" class="btn btn-momentary">RESET</button>
+          <button attr-app="button" attr-app-button-id="13" class="btn btn-momentary">EXTERNAL</button>
+          <button attr-app="button" attr-app-button-id="14" class="btn btn-momentary">COCKPIT</button>
+          <button attr-app="button" attr-app-button-id="15" class="btn btn-momentary">DRONE</button>
+        </div>
+      </div>
+      <!-- Floating status bar on bottom right -->
+      <div class="status-bar" id="app-status-bar">
+        <div class="d-flex flex-row">
+          <div class="btn-group">
+            <button class="btn btn-toggle" id="wake-lock" attr-state="false">Wakelock</button>
+            <button class="btn" id="home">⌂</button>
+            <button class="btn" id="screen-size">?</button>
+            <button class="btn" id="reset-device">↻</button>
+            <button class="btn" id="fullscreen">⛶</button>
+          </div>
+          <div id="status-led"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Glue code -->
+    <script type="module">
+      import { App } from "/js/app.js";
+      import { create_modal, create_app_controls, create_app_status_bar } from "/js/common.js";
+
+      let modal_open_elems = document.querySelectorAll("[attr-modal-id]");
+      for (let elem of modal_open_elems) {
+        create_modal(elem);
+      }
+
+      // Create app
+      let device_id = 1;
+      let app = new App(device_id);
+      create_app_controls(app);
+      create_app_status_bar(app);
+      app.start();
+      app.toggle_wakelock();
+      window.app = app;
+    </script>
+  </body>
+</html>
