@@ -13,6 +13,8 @@
 7. Select a controller layout
 
 ## Example UI
+Click [here](https://fiendchain.github.io/VirtualJoystickCpp/msfs.html) for a demo of the UI 
+
 ### Microsoft Flight Simulator 2020
 ![alt text](docs/gui_msfs_2020.png "Microsoft Flight Simulator 2020")
 
