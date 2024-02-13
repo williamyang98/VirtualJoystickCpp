@@ -1,14 +1,14 @@
 # Explanation
-![windows-build](https://github.com/FiendChain/VirtualJoystickCpp/actions/workflows/windows.yml/badge.svg)
+![windows-build](https://github.com/williamyang98/VirtualJoystickCpp/actions/workflows/windows.yml/badge.svg)
 
 [uWebsockets](https://github.com/uNetworking/uWebSockets) C++ server communicates with [vJoy](https://github.com/njz3/vJoy) to emulate a virtual joystick over a websocket.
 
 ## Instructions for use
-1. Download release from [releases section](https://github.com/FiendChain/VirtualJoystickCpp/releases)
+1. Download release from [releases section](https://github.com/williamyang98/VirtualJoystickCpp/releases)
 2. Unzip the folder
-3. Install <code>vJoySetup-*.exe</code>
-4. Setup your controller by running <code>vJoyConf.exe</code> which was just installed
-5. Start the server by running <code>main.exe</code>
+3. Install ```vJoySetup-*.exe```
+4. Setup your controller by running ```vJoyConf.exe``` which was just installed
+5. Start the server by running ```main.exe```
 6. Open http://localhost:3000 in your browser
 7. Select a controller layout
 
@@ -22,7 +22,7 @@ Click [here](https://fiendchain.github.io/VirtualJoystickCpp/msfs.html) for a de
 ![alt text](docs/gui_ksp.png "Kerbal Space Program")
 
 ### Changing UI
-UI is written in native javascript and basic HTML. Use the existing webpages in <code>static/*.html</code> as a starting guide.
+UI is written in native javascript and basic HTML. Use the existing webpages in ```static/*.html``` as a starting guide.
 
 ## Instructions for building
 ### Dependencies
@@ -36,7 +36,7 @@ UI is written in native javascript and basic HTML. Use the existing webpages in 
 - cmake
 
 ### Steps
-1. Initialise your x64 C++ development environment by running <code>vcvars64.bat</code>
-2. Run <code>fx cmake-conf</code>
-3. Run <code>fx build release</code>
-4. Run <code>build/Release/main.exe</code>
+1. Initialise your x64 C++ development environment by running ```vcvars64.bat```
+2. Configure cmake: ```cmake . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\tools\vcpkg\scripts\buildsystems\vcpkg.cmake```
+3. Build: ```cmake --build build --config Release```
+4. Run: ```.\build\Release\main.exe```
