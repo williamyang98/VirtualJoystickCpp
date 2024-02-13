@@ -11,6 +11,10 @@ ControllerPacketHandler::ControllerPacketHandler() {
     session = std::make_unique<ControllerSession>();
 }
 
+ControllerPacketHandler::~ControllerPacketHandler() {
+
+}
+
 tcb::span<const uint8_t> ControllerPacketHandler::on_packet(tcb::span<const uint8_t> buf) {
     if (buf.size() == 0) {
         return create_packet(Command::INVALID_REQUEST, Status_Error::EMPTY_REQUEST);

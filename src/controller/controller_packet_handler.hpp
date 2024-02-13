@@ -14,7 +14,7 @@ private:
     std::unique_ptr<ControllerSession> session;
 public:
     ControllerPacketHandler(); 
-    ~ControllerPacketHandler() override = default;
+    ~ControllerPacketHandler() override;
     tcb::span<const uint8_t> on_packet(tcb::span<const uint8_t> buf) override;
 private:
     tcb::span<const uint8_t> on_acquire(tcb::span<const uint8_t> buf);

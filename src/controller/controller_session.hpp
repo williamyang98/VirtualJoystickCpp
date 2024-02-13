@@ -28,10 +28,10 @@ public:
         }
     }
 
-    ControllerSession(const ControllerSession&) = default;
-    ControllerSession(ControllerSession&&) = default;
-    ControllerSession& operator=(const ControllerSession&) = default;
-    ControllerSession& operator=(ControllerSession&&) = default;
+    ControllerSession(const ControllerSession&) = delete;
+    ControllerSession(ControllerSession&&) = delete;
+    ControllerSession& operator=(const ControllerSession&) = delete;
+    ControllerSession& operator=(ControllerSession&&) = delete;
 
     Controller* get_controller() {
         return controller.get();

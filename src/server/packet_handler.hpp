@@ -7,7 +7,7 @@
 class PacketHandler 
 {
 public:
-    virtual ~PacketHandler() = 0 {};
+    virtual ~PacketHandler() {};
     virtual tcb::span<const uint8_t> on_packet(tcb::span<const uint8_t> buf) = 0;
 };
 
